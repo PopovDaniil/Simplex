@@ -58,10 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.error('Elements must have a unique \'data-key\' attribute');
                     }
 
-                    e.addEventListener('click', () => {
-                        const nestedData = data[key]
-                        const children = nestedData.children
+                    const nestedData = data[key]
+                    const children = nestedData.children
+                    if (children.length === 0) { return; }
 
+                    e.style.cursor = 'pointer';
+                    e.addEventListener('click', () => {
                         const source = template.innerHTML
                         const content = Handlebars.compile(source)(children);
                         if (!content) {
