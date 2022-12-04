@@ -15,8 +15,10 @@
 </head>
 
 <body>
-    <div class="grid render openChildren" name="card"></div>
-
+    <div class="navigation">
+        <div class="toRoot">Наверх</div>
+        <div class="grid render" name="card"></div>
+    </div>
     <script class="template" id="card" type="text/x-handlebars-template">
         {{#each .}}
         <div class="card" data-key="{{@index}}">

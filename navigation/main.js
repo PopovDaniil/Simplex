@@ -2,7 +2,7 @@ const blocks = [
     {
         templateName: 'card',
         dataKey: 'services',
-        // handler: (template) => template,
+        recursive: true,
     },
 ]
 
@@ -42,39 +42,49 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!data) {
                 console.warn(`No data with key ${block.dataKey}`);
             }
+            const recursive = block.recursive
 
-            const source = template.innerHTML
-            const content = Handlebars.compile(source)(data);
-            if (!content) {
-                console.warn(`Template '${name}' does not generate anything`);
-            }
-
-            element.innerHTML = content;
-
-            if (element.classList.contains('openChildren')) {
-                Array.from(element.children).forEach((e) => {
-                    const key = e.dataset.key
-                    if (!key) {
-                        console.error('Elements must have a unique \'data-key\' attribute');
-                    }
-
-                    const nestedData = data[key]
-                    const children = nestedData.children
-                    if (children.length === 0) { return; }
-
-                    e.style.cursor = 'pointer';
-                    e.addEventListener('click', () => {
-                        const source = template.innerHTML
-                        const content = Handlebars.compile(source)(children);
-                        if (!content) {
-                            console.warn(`Template '${name}' does not generate anything`);
-                        }
-
-                        element.innerHTML = content;
-                    })
-
-                })
-            }
+            render(element, template, data, recursive)
         }
     )
 })
+
+/**
+ * Отрисовывает шаблон, подставляя в него данные
+ * @param {HTMLElement} element Элемент, в котором будет отрисовываться шаблон
+ * @param {HTMLElement} template Элемент, содержащий шаблон
+ * @param {Record<string, any>} data Данные, которые будут вставлены в шаблон
+ * @param {boolean} recursive Рекурсивная отрисовка
+ * @param {Record<string, any> | undefined} parent указание на родителя (для рекурсивной отрисовки)
+ */
+function render(element, template, data, recursive, parent) {
+    const source = template.innerHTML
+    const content = Handlebars.compile(source)(data);
+    element.innerHTML = content;
+
+    console.log('Rendered', data);
+    if (recursive) {
+        Array.from(element.children).forEach((e) => {
+            const key = e.dataset.key
+            if (!key) {
+                console.error('Elements must have a unique \'data-key\' attribute');
+            }
+
+            const nestedData = data[key]
+            const parent = data;
+            const children = nestedData.children ?? []
+            if (children.length === 0) { return; }
+
+            e.style.cursor = 'pointer';
+            console.log('Event handler added on', e);
+            console.log('Parent', parent, 'children', children);
+            e.addEventListener('click', () => render(element, template, children, recursive, parent))
+        })
+
+        if (parent) {
+            const toRoot = document.querySelector('.toRoot');
+            toRoot.style.cursor = 'pointer';
+            toRoot.addEventListener('click', () => render(element, template, parent, recursive))
+        }
+    }
+}

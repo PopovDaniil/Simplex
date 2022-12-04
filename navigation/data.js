@@ -28,5 +28,26 @@ const inputData = {
                     },
                 ]
             },
+            {
+                name: 'Service 4',
+                children: [
+                    {
+                        name: 'Service 3',
+                        children: [
+                            {
+                                name: 'Service 3.1'
+                            },
+                            {
+                                name: 'Service 3.2',
+                                children: [
+                                    {
+                                        name: 'Service 3.2.1'
+                                    }
+                                ]
+                            },
+                        ]
+                    },
+                ],
+            },
         ]
 }
