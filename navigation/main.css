@@ -11,3 +11,7 @@ div.card {
     flex-wrap: wrap;
     justify-content: space-around;
 }
+
+.clickable {
+    cursor: pointer;
+}

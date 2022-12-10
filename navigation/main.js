@@ -1,90 +1,109 @@
 const blocks = [
-    {
-        templateName: 'card',
-        dataKey: 'services',
-        recursive: true,
-    },
-]
+  {
+    templateName: "card",
+    dataKey: "services",
+    recursive: true,
+  },
+];
 
-document.addEventListener('DOMContentLoaded', () => {
-    const templates = document.querySelectorAll('script.template');
-    if (templates.length === 0) {
-        console.warn('Page does not have templates')
+function main() {
+  const templates = document.querySelectorAll("script.template");
+  if (templates.length === 0) {
+    console.warn("Page does not have templates");
+  }
+
+  const renderPlaces = document.querySelectorAll(".render");
+  if (renderPlaces.length === 0) {
+    console.warn("Page does not have render places");
+  }
+
+  renderPlaces.forEach((element) => {
+    const name = element.getAttribute("name");
+    if (!name) {
+      console.error(`Render place must have a 'name' attribute`);
+      return;
     }
 
-    const renderPlaces = document.querySelectorAll('.render');
-    if (renderPlaces.length === 0) {
-        console.warn('Page does not have render places');
+    const template = Array.from(templates).find((temp) => temp.id === name);
+    if (!template) {
+      console.error(`No template for block '${name}'`);
+      return;
     }
 
-    renderPlaces.forEach(
-        (element) => {
-            const name = element.getAttribute('name');
-            if (!name) {
-                console.error(`Render place must have a 'name' attribute`);
-                return;
-            }
+    const block = blocks.find((block) => block.templateName === name);
+    if (!block) {
+      console.error(`No handler for block '${name}'`);
+      return;
+    }
 
-            const template = Array.from(templates)
-                .find((temp) => temp.id === name)
-            if (!template) {
-                console.error(`No template for block '${name}'`);
-                return;
-            }
+    let data = inputData[block.dataKey];
+    if (!data) {
+      console.warn(`No data with key ${block.dataKey}`);
+    }
+    if (block.transform) {
+      data = block.transform(data);
+    }
+    const recursive = block.recursive;
 
-            const block = blocks.find((block) => block.templateName === name)
-            if (!block) {
-                console.error(`No handler for block '${name}'`);
-                return;
-            }
+    if (recursive) {
+      recursiveRender(element, template, data, null);
+    }
+  });
+}
 
-            const data = inputData[block.dataKey]
-            if (!data) {
-                console.warn(`No data with key ${block.dataKey}`);
-            }
-            const recursive = block.recursive
-
-            render(element, template, data, recursive)
-        }
-    )
-})
+document.addEventListener("DOMContentLoaded", main);
 
 /**
- * Отрисовывает шаблон, подставляя в него данные
- * @param {HTMLElement} element Элемент, в котором будет отрисовываться шаблон
- * @param {HTMLElement} template Элемент, содержащий шаблон
- * @param {Record<string, any>} data Данные, которые будут вставлены в шаблон
- * @param {boolean} recursive Рекурсивная отрисовка
- * @param {Record<string, any> | undefined} parent указание на родителя (для рекурсивной отрисовки)
+ * Отрисовывает шаблон, рекурсивно подставляя в него данные из дерева
+ * @param {HTMLElement} rootElement DOM-элемент, в котором будет отрисовываться шаблон
+ * @param {HTMLElement} template DOM-элемент, содержащий шаблон
+ * @param {PlainElement[]} list Дерево с данными
  */
-function render(element, template, data, recursive, parent) {
-    const source = template.innerHTML
-    const content = Handlebars.compile(source)(data);
-    element.innerHTML = content;
+function recursiveRender(rootElement, template, list, parentId) {
+  const source = template.innerHTML;
+  const compiledTemplate = Handlebars.compile(source);
 
-    console.log('Rendered', data);
-    if (recursive) {
-        Array.from(element.children).forEach((e) => {
-            const key = e.dataset.key
-            if (!key) {
-                console.error('Elements must have a unique \'data-key\' attribute');
-            }
+  const data = list.filter((el) => el.parentId === parentId);
+  rootElement.innerHTML = compiledTemplate(data);
 
-            const nestedData = data[key]
-            const parent = data;
-            const children = nestedData.children ?? []
-            if (children.length === 0) { return; }
-
-            e.style.cursor = 'pointer';
-            console.log('Event handler added on', e);
-            console.log('Parent', parent, 'children', children);
-            e.addEventListener('click', () => render(element, template, children, recursive, parent))
-        })
-
-        if (parent) {
-            const toRoot = document.querySelector('.toRoot');
-            toRoot.style.cursor = 'pointer';
-            toRoot.addEventListener('click', () => render(element, template, parent, recursive))
-        }
+  console.log("Rendering", list);
+  Array.from(rootElement.children).forEach((childElement) => {
+    /** @type {string} */
+    const key = childElement.dataset.key;
+    if (!key) {
+      console.error("Elements must have a unique 'data-key' attribute");
     }
+    console.log(`Processing element #${key} parent #${parentId}`);
+
+    const currentElement = list.find((node) => node.id === Number(key));
+    console.log("current", currentElement);
+
+    const children = list.filter((el) => el.parentId === currentElement.id)
+    const parent = list.find((el) => el.id === currentElement.parentId)
+    console.log('children', children);
+    console.log('parent', parent);
+
+    if (children.length > 0) {
+      childElement.classList.add('clickable');
+      childElement.addEventListener("click", () => {
+        recursiveRender(
+          rootElement,
+          template,
+          list,
+          currentElement.id
+        );
+      });
+    }
+
+    if (parent) {
+      const upButton = document.querySelector('.upButton');
+      upButton.classList.add('clickable');
+      upButton.addEventListener('click', () => recursiveRender(
+        rootElement,
+        template,
+        list,
+        parent.parentId
+      ))
+    }
+  });
 }

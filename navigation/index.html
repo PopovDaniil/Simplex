@@ -11,17 +11,18 @@
     <script src="handlebars.min-v4.7.7.js"></script>
 
     <script src="data.js"></script>
+    <script src="tree.js"></script>
     <script src="main.js"></script>
 </head>
 
 <body>
     <div class="navigation">
-        <div class="toRoot">Наверх</div>
+        <div class="upButton">Наверх</div>
         <div class="grid render" name="card"></div>
     </div>
     <script class="template" id="card" type="text/x-handlebars-template">
         {{#each .}}
-        <div class="card" data-key="{{@index}}">
+        <div class="card {{#if children}}clickable{{/if}}" data-key="{{id}}">
             {{name}}
             
             {{#if children}}
