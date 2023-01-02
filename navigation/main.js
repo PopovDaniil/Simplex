@@ -1,8 +1,8 @@
 const blocks = [
   {
-    templateName: "card",
+    templateName: "services",
     dataKey: "services",
-    recursive: true,
+    // recursive: true,
   },
 ];
 
@@ -32,7 +32,7 @@ function main() {
 
     const block = blocks.find((block) => block.templateName === name);
     if (!block) {
-      console.error(`No handler for block '${name}'`);
+      console.warn(`No handler for block '${name}'`);
       return;
     }
 
@@ -40,13 +40,12 @@ function main() {
     if (!data) {
       console.warn(`No data with key ${block.dataKey}`);
     }
-    if (block.transform) {
-      data = block.transform(data);
-    }
     const recursive = block.recursive;
 
     if (recursive) {
       recursiveRender(element, template, data, null);
+    } else {
+      render(element, template, data);
     }
   });
 }
@@ -54,56 +53,51 @@ function main() {
 document.addEventListener("DOMContentLoaded", main);
 
 /**
- * Отрисовывает шаблон, рекурсивно подставляя в него данные из дерева
+ * Отрисовывает шаблон
  * @param {HTMLElement} rootElement DOM-элемент, в котором будет отрисовываться шаблон
  * @param {HTMLElement} template DOM-элемент, содержащий шаблон
- * @param {PlainElement[]} list Дерево с данными
+ * @param {Record<string, any>} data Данные в виде объекта
  */
-function recursiveRender(rootElement, template, list, parentId) {
+function render(rootElement, template, data) {
   const source = template.innerHTML;
   const compiledTemplate = Handlebars.compile(source);
 
-  const data = list.filter((el) => el.parentId === parentId);
   rootElement.innerHTML = compiledTemplate(data);
+console.log('Rendered', data);
+  const links = document.querySelectorAll(".link");
+  links.forEach((link) => {
+    const rootElement = link.dataset.target;
+    const template = link.dataset.template;
+    const data = link.dataset.contentKey;
+    const key = link.dataset.key;
 
-  console.log("Rendering", list);
-  Array.from(rootElement.children).forEach((childElement) => {
-    /** @type {string} */
-    const key = childElement.dataset.key;
-    if (!key) {
-      console.error("Elements must have a unique 'data-key' attribute");
-    }
-    console.log(`Processing element #${key} parent #${parentId}`);
-
-    const currentElement = list.find((node) => node.id === Number(key));
-    console.log("current", currentElement);
-
-    const children = list.filter((el) => el.parentId === currentElement.id)
-    const parent = list.find((el) => el.id === currentElement.parentId)
-    console.log('children', children);
-    console.log('parent', parent);
-
-    if (children.length > 0) {
-      childElement.classList.add('clickable');
-      childElement.addEventListener("click", () => {
-        recursiveRender(
-          rootElement,
-          template,
-          list,
-          currentElement.id
-        );
-      });
-    }
-
-    if (parent) {
-      const upButton = document.querySelector('.upButton');
-      upButton.classList.add('clickable');
-      upButton.addEventListener('click', () => recursiveRender(
-        rootElement,
-        template,
-        list,
-        parent.parentId
-      ))
-    }
+    link.onclick = () => linkHandler(rootElement, template, data, key);
   });
+
+  
+  document
+    .querySelectorAll(".link")
+    .forEach((el) =>
+      el.addEventListener("mousedown", () => el.classList.add("clicked"))
+    );
+  document
+    .querySelectorAll(".link")
+    .forEach((el) =>
+      el.addEventListener("mouseup", () => el.classList.remove("clicked"))
+    );
+}
+
+/**
+ * Обрабатывает переход по ссылке
+ * @param {string} rootElementName Название элемента, в котором будет отрисовываться шаблон
+ * @param {string} templateId ID, элемента, содержащего шаблон
+ * @param {string} dataPath Путь к данным
+ * @param {number} key Ключ элемента внутри массива данных
+ */
+function linkHandler(rootElementName, templateId, dataPath, key) {
+  const rootElement = document.querySelector(`[name=${rootElementName}]`);
+  const template = document.querySelector(`script.template#${templateId}`);
+  const dataList = dataPath ? inputData[dataPath] : inputData;
+  const data = (Array.isArray(dataList) && key) ? dataList.find(el => el.id.toString() === key) : dataList;
+  render(rootElement, template, data);
 }

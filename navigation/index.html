@@ -2,35 +2,49 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="main.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="main.css" />
 
-    <script src="handlebars.min-v4.7.7.js"></script>
+  <script src="handlebars.min-v4.7.7.js"></script>
 
-    <script src="data.js"></script>
-    <script src="tree.js"></script>
-    <script src="main.js"></script>
+  <script src="data.js"></script>
+  <script src="main.js"></script>
 </head>
 
 <body>
-    <div class="navigation">
-        <div class="upButton">Наверх</div>
-        <div class="grid render" name="card"></div>
-    </div>
-    <script class="template" id="card" type="text/x-handlebars-template">
-        {{#each .}}
-        <div class="card {{#if children}}clickable{{/if}}" data-key="{{id}}">
+  <div class="navigation">
+    <header>
+      <div class="up-button link" data-target="services" data-template="services" data-content-key="services"></div>
+    </header>
+
+    <main class="render" name="services"></main>
+  </div>
+
+  <script class="template" id="services" type="text/x-handlebars-template">
+      {{#each .}}
+      <div class="service-item{{#if contents}} link{{/if}}" data-key="{{id}}" {{#if contents}}data-target="services" data-template="service-content" data-content-key="services" {{/if}}>
+         <div>
             {{name}}
-            
-            {{#if children}}
-                ->
-            {{/if}}
-        </div>
-        {{/each}}
+          </div>
+          <div class="child-arrow hide"></div>
+      </div>
+    {{/each}}
     </script>
+
+  <script class="template" id="service-content" type="text/x-handlebars-template">
+      <div class="service-content" data-key="{{id}}">
+        <h2>{{name}}</h2>
+        <div class="list">
+        {{#each contents}}
+          <li>{{name}}</li>
+        {{/each}}
+        </div>
+      </div>  
+    </script>
+
 </body>
 
 </html>

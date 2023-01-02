@@ -1,13 +1,18 @@
+:root {
+    --bg-color: rgb(255, 200, 200)
+}
+
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .root {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-.root > * {
+/* .root > * {
     outline: 1px solid black;
 }
 .root > * > * {
@@ -15,10 +20,20 @@ body {
 }
 article  * {
     outline: 1px dotted gray;
-}
+} */
 .row {
     display: flex;
     flex-direction: row;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+.wrap {
+    flex-wrap: wrap;
+}
+.min-w300 {
+    min-width: 300px;
 }
 .w300 {
     width: 300px;
@@ -32,9 +47,11 @@ article  * {
 .h300 {
     height: 300px;
 }
-.grid {
-    display: grid;
-    grid-template-columns: 300px 300px 300px;
+.hfull {
+    height: 100%;
+}
+.gap-20 {
+    gap: 20px;
 }
 .container {
     display: flex;
@@ -42,9 +59,50 @@ article  * {
 .center {
     justify-content: center;
 }
+.vert-center {
+    align-items: center;
+}
 .text-center {
     text-align: center;
 }
 .text-vert-center {
     vertical-align: bottom;
+}
+.bg-blur {
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.text-white {
+    color: white;
+}
+
+
+header {
+    background-image: url('img/header-bg.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 10px;
+}
+article h2 {
+    height: 50px;
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+}
+article h3 {
+    background-color: var(--bg-color);
+}
+footer {
+    background-color: var(--bg-color);
+
 }
