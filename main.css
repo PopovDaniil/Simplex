@@ -1,11 +1,16 @@
 :root {
-    --bg-color: rgb(255, 200, 200)
+    --accent-color: rgb(255, 200, 200);
+    --bg-color: rgb(255, 255, 255);
+    --card-color: rgb(245, 245, 245);
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+a {
+    text-decoration: none;
 }
 .root {
     display: flex;
@@ -41,6 +46,9 @@ article  * {
 .w500 {
     width: 500px;
 }
+.w1200 {
+    width: 1200px;
+}
 .wfull {
     width: 100%;
 }
@@ -65,6 +73,10 @@ article  * {
 .text-center {
     text-align: center;
 }
+.text-right {
+    text-align: right;
+    float: right;
+}
 .text-vert-center {
     vertical-align: bottom;
 }
@@ -76,6 +88,12 @@ article  * {
 .text-white {
     color: white;
 }
+.text-red {
+    color: brown;
+}
+.text-blue {
+    color: darkblue;
+}
 
 
 header {
@@ -85,11 +103,20 @@ header {
     background-size: cover;
     height: 500px;
 }
+.top-bar {
+    width: 100%;
+    /* height: 50px; */
+    line-height: 36px;
+    background-color: var(--accent-color);
+}
 .card {
-    display: flex;
-    flex-direction: column;
     padding: 10px;
     margin: 10px;
+    border-radius: 10px;
+    background-color: var(--card-color);
+}
+article {
+    background-color: var(--bg-color);
 }
 article h2 {
     height: 50px;
@@ -97,12 +124,13 @@ article h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg-color);
+    background-color: var(--accent-color);
 }
 article h3 {
-    background-color: var(--bg-color);
+    background-color: var(--accent-color);
 }
 footer {
-    background-color: var(--bg-color);
-
+    background-color: var(--accent-color);
+    font-size: 12px;
+    padding: 10px;
 }
