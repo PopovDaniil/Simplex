@@ -25,15 +25,19 @@
                 <h2>Услуги</h2>
                 <div class="container center">
                     <div class="row wrap center vert-center">
-                        <section class="card min-w300 w500">
-                            <h4 class="text-center">Водительская справка</h4>
-                            <div>
-                                Для категорий: A, B, BE, M, A1, B1 - 1 200 рублей.<br>
-                                Для категорий: C, D, CE, DE, Tm, Tb, C1, D1, C1E, D1E ( грузовой транспорт) - 2 500
-                                рублей.
-                            </div>
-                        </section>
-                        <section class="card min-w300 w500">
+                        <?php
+                        foreach ($data['services'] as $key => $service) {
+                        ?>
+                            <section class="card min-w300 w500">
+                                <h4 class="text-center"><?= $service['name'] ?></h4>
+                                <div>
+                                    <?= $service['description'] ?>
+                                </div>
+                            </section>
+                        <?php
+                        }
+                        ?>
+                        <!--  <section class="card min-w300 w500">
                             <h4 class="text-center">Анализ на коронавирус</h4>
                             <div>
                                 Экспресс-анализ на антитела - 1000 рублей.<br>
@@ -68,7 +72,7 @@
                                 УЗИ суставов, печени, почек - 500 рублей<br>
                                 УЗИ легких - 750 рублей<br>
                             </div>
-                        </section>
+                        </section> -->
                     </div>
                 </div>
             </article>
@@ -114,8 +118,7 @@
                 <section class="map text-center">
                     <h3 class="text-vert-center">Как проехать</h3>
                     <div class="container center">
-                        <script type="text/javascript" charset="utf-8" async
-                            src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A308cc78b6b218e22a8ff3cb88ceab758dcf40a9bb310a7fa942722f551b95d87&amp;width=1200&amp;height=400&amp;lang=ru_RU&amp;scroll=false"></script>
+                        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A308cc78b6b218e22a8ff3cb88ceab758dcf40a9bb310a7fa942722f551b95d87&amp;width=1200&amp;height=400&amp;lang=ru_RU&amp;scroll=false"></script>
                     </div>
                 </section>
             </article>
