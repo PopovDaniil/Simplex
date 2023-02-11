@@ -10,7 +10,8 @@ function db_migrate(mysqli $db)
     CREATE TABLE IF NOT EXISTS `services` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
       `name` varchar(255) NOT NULL,
-      `description` text NOT NULL,
+      `short_description` text NOT NULL,
+      `full_description` text NOT NULL,
       PRIMARY KEY (`id`)
     );');
 }
@@ -20,9 +21,11 @@ function db_seed(mysqli $db)
     $row_count = $db->query('SELECT * FROM services')->num_rows;
     if ($row_count > 0) return;
     $db->query("
-    INSERT INTO simplex.services (name,description) VALUES
+    INSERT INTO simplex.services (name,short_description, full_description) VALUES
 	 ('Водительская справка',' Для категорий: A, B, BE, M, A1, B1 - 1 200 рублей.<br>
- Для категорий: C, D, CE, DE, Tm, Tb, C1, D1, C1E, D1E (грузовой транспорт) - 2 500 рублей.'),
+ Для категорий: C, D, CE, DE, Tm, Tb, C1, D1, C1E, D1E (грузовой транспорт) - 2 500 рублей.',
+ ''
+),
 	 ('Анализ на коронавирус','Экспресс-анализ на антитела - 1000 рублей.<br>
 Анализ на антигены - 2200 рублей.<br>
 Выявление РНК вируса (ПЦР тест) - 2000 рублей.'),
@@ -49,5 +52,11 @@ class ServicesAdapter
     public function getList()
     {
         return $this->db->query('SELECT * FROM services')->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getById(int $id)
+    {
+        $escapedId = $this->db->escape_string($id);
+        return $this->db->query("SELECT * FROM services WHERE id=$escapedId")->fetch_assoc();
     }
 }

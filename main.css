@@ -11,6 +11,7 @@ body {
 }
 a {
     text-decoration: none;
+    color: initial;
 }
 .root {
     display: flex;
@@ -51,6 +52,9 @@ article  * {
 }
 .wfull {
     width: 100%;
+}
+.min-h150{
+    min-height: 150px;
 }
 .h300 {
     height: 300px;
