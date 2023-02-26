@@ -1,0 +1,44 @@
+<?php
+require_once './db.php';
+
+$db = db_connect();
+
+if (!empty($_GET['init'])) {
+    db_migrate($db);
+    db_seed($db);
+}
+
+$servicesAdapter = new ServicesAdapter($db);
+
+$data = [];
+$data['services'] = $servicesAdapter->getList();
+
+if (!isset($_POST['id']) && isset($_POST['name'], $_POST['short_description'], $_POST['full_description'])) {
+    $servicesAdapter->create($_POST['name'], $_POST['short_description'], $_POST['full_description']);
+    header("Location: admin.php");
+}
+
+if (isset($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description'])) {
+    $servicesAdapter->update($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description']);
+}
+
+if (isset($_GET['delete'])) {
+    $servicesAdapter->delete($_GET['delete']);
+    header("Location: admin.php");
+}
+
+
+if (isset($_GET['edit'])) {
+    $data['selectedService'] = $servicesAdapter->getById($_GET['edit']);
+}
+
+if (isset($_GET['new'])) {
+    $data['selectedService'] = [
+        'id' => 0,
+        'name' => '',
+        'short_description' => '',
+        'full_description' => '',
+    ];
+}
+
+require_once './views/adminView.php';

@@ -1,0 +1,148 @@
+:root {
+  --accent-color: rgb(255, 200, 200);
+  --bg-color: rgb(255, 255, 255);
+  --card-color: rgb(245, 245, 245);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+a {
+  text-decoration: none;
+  color: initial;
+}
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+/* .root > * {
+    outline: 1px solid black;
+}
+.root > * > * {
+    outline: 1px dashed black;
+}
+article  * {
+    outline: 1px dotted gray;
+} */
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+.min-w300 {
+  min-width: 300px;
+}
+.w300 {
+  width: 300px;
+}
+.w500 {
+  width: 500px;
+}
+.w1200 {
+  width: 1200px;
+}
+.wfull {
+  width: 100%;
+}
+.min-h150 {
+  min-height: 150px;
+}
+.h300 {
+  height: 300px;
+}
+.hfull {
+  height: 100%;
+}
+.gap-20 {
+  gap: 20px;
+}
+.container {
+  display: flex;
+}
+.center {
+  justify-content: center;
+}
+.vert-center {
+  align-items: center;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+  float: right;
+}
+.text-vert-center {
+  vertical-align: bottom;
+}
+.bg-blur {
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.text-white {
+  color: white;
+}
+.text-red {
+  color: brown;
+}
+.text-blue {
+  color: darkblue;
+}
+
+header {
+  background-image: url("../img/header-bg.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 500px;
+}
+.top-bar {
+  width: 100%;
+  /* height: 50px; */
+  line-height: 36px;
+  background-color: var(--accent-color);
+}
+.card {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  background-color: var(--card-color);
+}
+article {
+  background-color: var(--bg-color);
+}
+article h2 {
+  height: 50px;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--accent-color);
+}
+article h3 {
+  background-color: var(--accent-color);
+}
+
+.glide__arrow {
+  border: none !important;
+  font-size: 24px !important;
+  color: black !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+footer {
+  background-color: var(--accent-color);
+  font-size: 12px;
+  padding: 10px;
+}

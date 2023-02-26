@@ -4,11 +4,6 @@ require_once './db.php';
 
 $db = db_connect();
 
-if (!empty($_GET['init'])) {
-    db_migrate($db);
-    db_seed($db);
-}
-
 $servicesAdapter = new ServicesAdapter($db);
 
 $data = [];
@@ -19,4 +14,4 @@ if (isset($_GET['service'])) {
     $data['selectedService'] = $servicesAdapter->getById($_GET['service']);
 }
 
-require_once './main.php';
+require_once './views/mainView.php';
