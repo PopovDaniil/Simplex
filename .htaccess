@@ -1,0 +1,9 @@
+DirectoryIndex index.php
+
+<files ~ "(index|admin).php">
+allow from all
+</files>
+
+<files .>
+allow from all
+</files>

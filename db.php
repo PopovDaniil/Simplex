@@ -1,12 +1,18 @@
 <?php
 function db_connect()
 {
-    return new mysqli('localhost', 'root', '', 'simplex');
+    require './.env.php';
+    return new mysqli(
+        $env['MYSQL_HOST'],
+        $env['MYSQL_USER'],
+        $env['MYSQL_PASSWORD'],
+        $env['MYSQL_DB'],
+    );
 }
 
 function db_migrate(mysqli $db)
 {
-    $db->query('DROP TABLE services');
+    $db->query('DROP TABLE IF EXISTS services');
     $db->query('
     CREATE TABLE `services` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -22,7 +28,7 @@ function db_seed(mysqli $db)
     $row_count = $db->query('SELECT * FROM services')->num_rows;
     if ($row_count > 0) return;
     $db->query("
-    INSERT INTO simplex.services (name,short_description, full_description) VALUES
+    INSERT INTO services (name,short_description, full_description) VALUES
 	 ('Водительская справка',' Для категорий: A, B, BE, M, A1, B1 - 1 200 рублей.<br>
  Для категорий: C, D, CE, DE, Tm, Tb, C1, D1, C1E, D1E (грузовой транспорт) - 2 500 рублей.',
  ''

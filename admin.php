@@ -1,4 +1,22 @@
 <?php
+include './.env.php';
+session_start();
+
+if (isset($_POST['login'], $_POST['password']) && $_POST['login'] === $env['ADMIN_USER'] && $_POST['password'] === $env['ADMIN_PASSWORD']) {
+    $_SESSION['user'] = $_POST['login'];
+}
+
+if (isset($_GET['logout'])) {
+    unset($_SESSION['user']);
+    header('Location: admin.php');
+}
+
+
+if (!isset($_SESSION['user'])) {
+    require_once './views/loginView.php';
+    return;
+}
+
 require_once './db.php';
 
 $db = db_connect();
