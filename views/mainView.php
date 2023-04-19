@@ -13,11 +13,20 @@
 
 <body>
     <div class="root">
+        <?php if (!isset($_GET['service'])) { ?>
+            <nav class="container center">
+                <div class="container w300 space-between">
+                    <a href="#services">Услуги</a>
+                    <a href="#about">О нас</a>
+                    <a href="#contacts">Контакты</a>
+                </div>
+            </nav>
+        <?php } ?>
         <header>
             <a href=".">
                 <section class="container bg-blur wfull hfull center vert-center">
                     <div class="row gap-20 center vert-center">
-                        <img src="img/logo.png" alt="">
+                        <img class="logo" src="img/logo.png" alt="">
                         <h1 class="text-white">ООО "Симплекс"</h1>
                     </div>
                 </section>
@@ -27,6 +36,7 @@
 
             <article>
                 <h2>
+                    <div class="anchor" id="services"></div>
                     <?php if (isset($_GET['service'])) {
                         echo $data['selectedService']['name'];
                     } else { ?>
@@ -36,21 +46,21 @@
                 <div class="container center">
                     <div class="row wrap center vert-center">
                         <?php if (isset($_GET['service'])) { ?>
-                            <section class="card w1200">
+                            <section class="card">
                                 <p><?= $data['selectedService']['short_description'] ?></p>
                                 <p><?= $data['selectedService']['full_description'] ?></p>
                             </section>
                             <?php } else {
                             foreach ($data['services'] as $key => $service) {
                             ?>
-                                <a href="?service=<?= $service['id'] ?>">
-                                    <section class="card min-w300 w500 min-h150">
+                                <section class="card min-w300 w500 min-h150">
+                                    <a href="?service=<?= $service['id'] ?>">
                                         <h4 class="text-center"><?= $service['name'] ?></h4>
                                         <div>
                                             <?= $service['short_description'] ?>
                                         </div>
-                                    </section>
-                                </a>
+                                    </a>
+                                </section>
                         <?php
                             }
                         }
@@ -61,9 +71,10 @@
 
             <?php if ($data['isMainPage']) { ?>
                 <article>
+                    <div class="anchor" id="about"></div>
                     <h2 class="text-center">О нас</h2>
-                    <div class="column vert-center center">
-                        <section class="card row w1200">
+                    <div class="column vert-center center margin-small">
+                        <section class="card row wfull">
                             <div class="glide">
                                 <div class="glide__track" data-glide-el="track">
                                     <ul class="glide__slides">
@@ -104,9 +115,10 @@
                     </div>
                 </article>
                 <article>
-                    <h2>Контакты</h2>
+                    <div class="anchor" id="contacts"></div>
+                    <h2 id="contacts">Контакты</h2>
                     <section class="column vert-center">
-                        <div class="card w1200">
+                        <div class="card">
                             <b>Адреса:</b>
                             <div>
                                 <span class="text-red">ул. Соколова 84/302</span>
