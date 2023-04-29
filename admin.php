@@ -36,8 +36,8 @@ if (!isset($_POST['id']) && isset($_POST['name'], $_POST['short_description'], $
     header("Location: admin.php");
 }
 
-if (isset($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description'])) {
-    $servicesAdapter->update($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description']);
+if (isset($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description'], $_POST['serviceContent'])) {
+    $servicesAdapter->update($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description'], $_POST['serviceContent']);
 }
 
 if (isset($_GET['delete'])) {
@@ -48,6 +48,7 @@ if (isset($_GET['delete'])) {
 
 if (isset($_GET['edit'])) {
     $data['selectedService'] = $servicesAdapter->getById($_GET['edit']);
+    $data['serviceContent'] = $servicesAdapter->getContents($_GET['edit']);
 }
 
 if (isset($_GET['new'])) {

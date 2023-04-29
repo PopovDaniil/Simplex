@@ -49,6 +49,11 @@
                             <section class="card">
                                 <p><?= $data['selectedService']['short_description'] ?></p>
                                 <p><?= $data['selectedService']['full_description'] ?></p>
+                                <p>
+                                    <?php foreach ($data['serviceContent'] as $entry) { ?>
+                                        <?= $entry['description'] ?> - <?= $entry['price'] ?> рублей<br>
+                                    <?php } ?>
+                                </p>
                             </section>
                             <?php } else {
                             foreach ($data['services'] as $key => $service) {

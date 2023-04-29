@@ -19,6 +19,28 @@
                     <label>Название<input type="text" name="name" value="<?= $data['selectedService']['name'] ?>" required></label>
                     <label>Краткое описание<textarea name="short_description" required><?= $data['selectedService']['short_description'] ?></textarea></label>
                     <label>Полное описание<textarea name="full_description" required><?= $data['selectedService']['full_description'] ?></textarea></label>
+                    <label>Состав услуги
+                        <table>
+                            <thead>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Цена</th>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($data['serviceContent'] as $entry) { ?>
+                                    <tr>
+                                        <td><?=$entry['id']?> <input type="hidden" name="serviceContent[<?= $entry['id'] ?>][id]" value="<?= $entry['id'] ?>"></td>
+                                        <td>
+                                            <input type="text" name="serviceContent[<?= $entry['id'] ?>][description]" maxlength="100" size="50" value="<?= $entry['description'] ?>">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="serviceContent[<?= $entry['id'] ?>][price]" min="0" max="999999" value="<?= $entry['price'] ?>"> рублей
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </label>
                     <input type="submit" value="Сохранить">
                 </form>
             </div>

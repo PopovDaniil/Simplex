@@ -21,6 +21,17 @@ function db_migrate(mysqli $db)
       `full_description` text NOT NULL,
       PRIMARY KEY (`id`)
     );');
+    $db->query('
+    CREATE TABLE `services_entries` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `service_id` int(11) NOT NULL,
+        `description` text NOT NULL,
+        `price` decimal(10,0) NOT NULL,
+        PRIMARY KEY (`id`),
+        KEY `services_entries_FK` (`service_id`),
+        CONSTRAINT `services_entries_FK` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
+      ) 
+    ');
 }
 
 function db_seed(mysqli $db)
@@ -67,6 +78,12 @@ class ServicesAdapter
         return $this->db->query("SELECT * FROM services WHERE id=$escaped_id")->fetch_assoc();
     }
 
+    public function getContents(int $service_id)
+    {
+        $escaped_service_id = $this->db->escape_string($service_id);
+        return $this->db->query("SELECT * FROM services_entries WHERE service_id=$escaped_service_id")->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function create(string $name, string $short_description, string $full_description)
     {
         $escaped = [
@@ -77,15 +94,25 @@ class ServicesAdapter
         return $this->db->query("INSERT INTO services(name,short_description, full_description) VALUES ('{$escaped['name']}', '{$escaped['short_description']}', '{$escaped['full_description']}')");
     }
 
-    public function update(int $id, string $name, string $short_description, string $full_description)
+    public function update(int $id, string $name, string $short_description, string $full_description, array $content)
     {
+        var_dump($content);
         $escaped = [
             'id' => $this->db->escape_string($id),
             'name' => $this->db->escape_string($name),
             'short_description' => $this->db->escape_string($short_description),
             'full_description' => $this->db->escape_string($full_description),
         ];
-        return $this->db->query("UPDATE services SET name = '{$escaped['name']}', short_description = '{$escaped['short_description']}', full_description = '{$escaped['full_description']}' WHERE id = {$escaped['id']}");
+        $this->db->query("UPDATE services SET name = '{$escaped['name']}', short_description = '{$escaped['short_description']}', full_description = '{$escaped['full_description']}' WHERE id = {$escaped['id']}");
+
+        foreach ($content as $entry) {
+            $escaped_entry = [
+                'id' => $this->db->escape_string($entry['id']),
+                'description' => $this->db->escape_string($entry['description']),
+                'price' => $this->db->escape_string($entry['price']),
+            ];
+            $this->db->query("UPDATE services_entries SET description = '{$escaped_entry['description']}', price = '{$escaped_entry['price']}' WHERE id = {$escaped_entry['id']}");
+        }
     }
 
     public function delete(int $id)

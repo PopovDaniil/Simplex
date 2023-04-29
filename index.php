@@ -7,11 +7,16 @@ $db = db_connect();
 $servicesAdapter = new ServicesAdapter($db);
 
 $data = [];
-$data['services'] = $servicesAdapter->getList();
-$data['isMainPage'] = !isset($_GET['service']);
+$data['isMainPage'] = false;
 
 if (isset($_GET['service'])) {
     $data['selectedService'] = $servicesAdapter->getById($_GET['service']);
+    $data['serviceContent'] = $servicesAdapter->getContents($_GET['service']);
+} else {
+    $data['services'] = $servicesAdapter->getList();
+    $data['isMainPage'] = true;
 }
+
+var_dump($data);
 
 require_once './views/mainView.php';
