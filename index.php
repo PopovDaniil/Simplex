@@ -17,6 +17,4 @@ if (isset($_GET['service'])) {
     $data['isMainPage'] = true;
 }
 
-var_dump($data);
-
 require_once './views/mainView.php';

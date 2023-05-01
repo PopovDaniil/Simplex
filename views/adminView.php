@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/admin.css">
     <link rel="stylesheet" href="styles/main.css">
-    <title>Document</title>
+    <title>Симплекс: Админ-панель</title>
 </head>
 
 <body>
@@ -15,10 +15,10 @@
             <h2> <a href="./admin.php"><button>К списку услуг</button></a> Редактирование услуги</h2>
             <div class="container center">
                 <form method="POST">
-                    <label>ID<input type="text" name="id" readonly value="<?= $data['selectedService']['id'] ?>"></label>
-                    <label>Название<input type="text" name="name" value="<?= $data['selectedService']['name'] ?>" required></label>
+                    <label>ID<input type="text" name="id" size="10" readonly value="<?= $data['selectedService']['id'] ?>"></label>
+                    <label>Название<input type="text" name="name" size="50" value="<?= $data['selectedService']['name'] ?>" required></label>
                     <label>Краткое описание<textarea name="short_description" required><?= $data['selectedService']['short_description'] ?></textarea></label>
-                    <label>Полное описание<textarea name="full_description" required><?= $data['selectedService']['full_description'] ?></textarea></label>
+                    <label>Полное описание<textarea name="full_description"><?= $data['selectedService']['full_description'] ?></textarea></label>
                     <label>Состав услуги
                         <table>
                             <thead>
@@ -29,7 +29,7 @@
                             <tbody>
                                 <?php foreach ($data['serviceContent'] as $entry) { ?>
                                     <tr>
-                                        <td><?=$entry['id']?> <input type="hidden" name="serviceContent[<?= $entry['id'] ?>][id]" value="<?= $entry['id'] ?>"></td>
+                                        <td><?= $entry['id'] ?> <input type="hidden" name="serviceContent[<?= $entry['id'] ?>][id]" value="<?= $entry['id'] ?>"></td>
                                         <td>
                                             <input type="text" name="serviceContent[<?= $entry['id'] ?>][description]" maxlength="100" size="50" value="<?= $entry['description'] ?>">
                                         </td>
@@ -38,6 +38,9 @@
                                         </td>
                                     </tr>
                                 <?php } ?>
+                                <tr>
+                                    <td colspan="3" class="text-center"><a href="?edit=<?= $data['selectedService']['id'] ?>&addRow"><input type="button" value="Добавить"></a></td>
+                                </tr>
                             </tbody>
                         </table>
                     </label>

@@ -31,6 +31,11 @@ $servicesAdapter = new ServicesAdapter($db);
 $data = [];
 $data['services'] = $servicesAdapter->getList();
 
+if (isset($_GET['addRow'])) {
+    $servicesAdapter->addRow($_GET['edit']);
+    header("Location: admin.php?edit={$_GET['edit']}");
+}
+
 if (!isset($_POST['id']) && isset($_POST['name'], $_POST['short_description'], $_POST['full_description'])) {
     $servicesAdapter->create($_POST['name'], $_POST['short_description'], $_POST['full_description']);
     header("Location: admin.php");
@@ -38,6 +43,7 @@ if (!isset($_POST['id']) && isset($_POST['name'], $_POST['short_description'], $
 
 if (isset($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description'], $_POST['serviceContent'])) {
     $servicesAdapter->update($_POST['id'], $_POST['name'], $_POST['short_description'], $_POST['full_description'], $_POST['serviceContent']);
+    header("Location: admin.php?edit={$_POST['id']}");
 }
 
 if (isset($_GET['delete'])) {

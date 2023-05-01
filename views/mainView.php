@@ -148,7 +148,7 @@
                 </article>
             <?php } ?>
         </main>
-        <footer class="text-center">© Симплекс, 2022</footer>
+        <footer class="text-center">© Симплекс, 2023</footer>
 
 
         <script>

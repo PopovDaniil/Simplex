@@ -96,7 +96,6 @@ class ServicesAdapter
 
     public function update(int $id, string $name, string $short_description, string $full_description, array $content)
     {
-        var_dump($content);
         $escaped = [
             'id' => $this->db->escape_string($id),
             'name' => $this->db->escape_string($name),
@@ -113,6 +112,11 @@ class ServicesAdapter
             ];
             $this->db->query("UPDATE services_entries SET description = '{$escaped_entry['description']}', price = '{$escaped_entry['price']}' WHERE id = {$escaped_entry['id']}");
         }
+    }
+
+    public function addRow(int $service_id)
+    {
+        return $this->db->query("INSERT INTO services_entries(service_id, description, price) VALUES ($service_id, '', '')");
     }
 
     public function delete(int $id)
