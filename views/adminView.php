@@ -25,6 +25,7 @@
                                 <th>ID</th>
                                 <th>Название</th>
                                 <th>Цена</th>
+                                <th>Действия</th>
                             </thead>
                             <tbody>
                                 <?php foreach ($data['serviceContent'] as $entry) { ?>
@@ -36,10 +37,13 @@
                                         <td>
                                             <input type="number" name="serviceContent[<?= $entry['id'] ?>][price]" min="0" max="999999" value="<?= $entry['price'] ?>"> рублей
                                         </td>
+                                        <td>
+                                            <input type="submit" formaction="?edit=<?= $data['selectedService']['id'] ?>&deleteRow=<?= $entry['id'] ?>" value="Удалить">
+                                        </td>
                                     </tr>
                                 <?php } ?>
                                 <tr>
-                                    <td colspan="3" class="text-center"><a href="?edit=<?= $data['selectedService']['id'] ?>&addRow"><input type="button" value="Добавить"></a></td>
+                                    <td colspan="3" class="text-center"><input type="submit" formaction="?edit=<?= $data['selectedService']['id'] ?>&addRow" value="Добавить"></td>
                                 </tr>
                             </tbody>
                         </table>

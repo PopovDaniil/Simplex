@@ -118,6 +118,11 @@ class ServicesAdapter
     {
         return $this->db->query("INSERT INTO services_entries(service_id, description, price) VALUES ($service_id, '', '')");
     }
+  
+    public function deleteRow(int $row_id)
+    {
+        return $this->db->query("DELETE FROM services_entries WHERE id = $row_id");
+    }
 
     public function delete(int $id)
     {

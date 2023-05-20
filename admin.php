@@ -36,6 +36,11 @@ if (isset($_GET['addRow'])) {
     header("Location: admin.php?edit={$_GET['edit']}");
 }
 
+if (isset($_GET['deleteRow'])) {
+    $servicesAdapter->deleteRow($_GET['deleteRow']);
+    header("Location: admin.php?edit={$_GET['edit']}");
+}
+
 if (!isset($_POST['id']) && isset($_POST['name'], $_POST['short_description'], $_POST['full_description'])) {
     $servicesAdapter->create($_POST['name'], $_POST['short_description'], $_POST['full_description']);
     header("Location: admin.php");
